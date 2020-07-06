@@ -1,0 +1,85 @@
+html,
+body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.renderArea {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    touch-action: none;
+    z-index: 10;
+    outline: 0;
+}
+
+.back_ground {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("./images/background.jpg");
+}
+
+.loadingContainer {
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loadingText {
+    margin-top: 100px;
+    font-size: 14px;
+}
+
+.cssload-spinner {
+    position: absolute;
+    width: 33px;
+    height: 33px;
+    left: 50%;
+    top: 45%;
+    margin-left: -17px;
+    margin-top: -17px;
+}
+.cssload-spinner:after,
+.cssload-spinner:before {
+    position: absolute;
+    content: "";
+    border: 2px solid rgb(61, 139, 255);
+    width: 31px;
+    height: 31px;
+}
+.cssload-spinner:after {
+    animation: cssload-spinner1 2.88s linear infinite;
+}
+.cssload-spinner:before {
+    width: 43px;
+    height: 43px;
+    margin-left: -6.5px;
+    margin-top: -6.5px;
+    animation: cssload-spinner2 2.88s linear infinite;
+}
+
+@keyframes cssload-spinner1 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes cssload-spinner2 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
