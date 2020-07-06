@@ -45,10 +45,10 @@ new RGBELoader()
 const camera = new THREE.PerspectiveCamera(
     65,
     window.innerWidth / window.innerHeight,
-    0.1,
-    1000
+    0.01,
+    100
 );
-camera.position.set(15, 3, 0);
+camera.position.set(10, 3, 1.5);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 // controls
 const orbit = new OrbitControls(camera, renderer.domElement);
