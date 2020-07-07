@@ -1,7 +1,7 @@
 /*
  * @Author: hongxu.lin
  * @Date: 2020-07-06 15:11:50
- * @LastEditTime: 2020-07-07 13:56:25
+ * @LastEditTime: 2020-07-07 15:13:31
  */
 
 import * as THREE from "three";
@@ -219,8 +219,10 @@ export class FirstPersonCameraControl {
                         isFalling = false;
                         return;
                     }
-                } else {
+                } else if (intersect.distance < this.playerHeight) {
                     this.camera.position.y = newPosition.y;
+                    this._fallingTime = 0;
+                    isFalling = false;
                 }
             }
 
@@ -232,19 +234,20 @@ export class FirstPersonCameraControl {
     }
 
     collisionTest() {
-        if (this.applyCollision) {
-            if (this._camerLocalDirection.x !== 0) this.collisionTestX();
-            if (this._camerLocalDirection.z !== 0) this.collisionTestZ();
-        }
+        if (this._camerLocalDirection.x !== 0) this.collisionTestX();
+        if (this._camerLocalDirection.z !== 0) this.collisionTestZ();
     }
 
     collisionTestX() {
         this._tmpVector.setFromMatrixColumn(this.camera.matrix, 0);
         this._tmpVector.multiplyScalar(this._camerLocalDirection.x);
-        const intersect = this.hitTest();
-        if (intersect && intersect.distance < 0.3) {
-            return;
+        if (this.applyCollision) {
+            const intersect = this.hitTest();
+            if (intersect && intersect.distance < 0.3) {
+                return;
+            }
         }
+
         this.camera.position.addScaledVector(this._tmpVector, this.moveSpeed);
     }
 
@@ -252,10 +255,13 @@ export class FirstPersonCameraControl {
         this._tmpVector.setFromMatrixColumn(this.camera.matrix, 0);
         this._tmpVector.crossVectors(this.camera.up, this._tmpVector);
         this._tmpVector.multiplyScalar(this._camerLocalDirection.z);
-        const intersect = this.hitTest();
-        if (intersect && intersect.distance < 0.3) {
-            return;
+        if (this.applyCollision) {
+            const intersect = this.hitTest();
+            if (intersect && intersect.distance < 0.3) {
+                return;
+            }
         }
+
         this.camera.position.addScaledVector(this._tmpVector, this.moveSpeed);
     }
 

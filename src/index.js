@@ -1,7 +1,7 @@
 /*
  * @Author: hongxu.lin
  * @Date: 2020-07-06 14:30:24
- * @LastEditTime: 2020-07-07 14:34:41
+ * @LastEditTime: 2020-07-07 15:15:17
  */
 
 import * as THREE from "three";
@@ -65,15 +65,23 @@ firstperson.enabled = false;
 
 let settings = {
     firstPerson: false,
+    gravity: false,
+    collision: false,
+    positionEasing: false,
 };
 
 var gui = new GUI();
 gui.domElement.parentElement.style.zIndex = 1000;
 gui.add(settings, "firstPerson", false).onChange(onSettingsChange);
-
+gui.add(settings, "gravity", false).onChange(onSettingsChange);
+gui.add(settings, "collision", false).onChange(onSettingsChange);
+gui.add(settings, "positionEasing", true).onChange(onSettingsChange);
 function onSettingsChange(newValue) {
     if (settings.firstPerson) {
         firstperson.enabled = true;
+        firstperson.applyGravity = settings.gravity;
+        firstperson.applyCollision = settings.collision;
+        firstperson.positionEasing = settings.positionEasing;
         orbit.enabled = false;
     } else {
         firstperson.enabled = false;
