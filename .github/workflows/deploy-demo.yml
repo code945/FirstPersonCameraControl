@@ -1,0 +1,22 @@
+name: auto publish #发布名称
+
+on:  
+  push: #触发方式
+    branches: 
+      - master #触发分支
+
+jobs: #脚本内容
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm install
+    - run: npm run build 
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with: 
+        publish_dir: dist
+        deploy_key: ${{secrets.public}}
