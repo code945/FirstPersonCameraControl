@@ -1,7 +1,13 @@
+/*
+ * @Author: hongxu.lin
+ * @Date: 2020-07-06 14:30:24
+ * @LastEditTime: 2020-07-07 14:34:41
+ */
+
 import * as THREE from "three";
 import { OrbitControls } from "./lib/controls/OrbitControls";
 import "./index.less";
-
+import { GUI } from "./lib/dat.gui.module.js";
 import { GLTFLoader } from "./lib/loaders/GLTFLoader.js";
 import { RGBELoader } from "./lib//loaders/RGBELoader.js";
 
@@ -52,10 +58,36 @@ camera.position.set(10, 3, 1.5);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 // controls
 const orbit = new OrbitControls(camera, renderer.domElement);
-orbit.enabled = false;
+orbit.enabled = true;
 
 const firstperson = new FirstPersonCameraControl(camera, renderer.domElement);
-firstperson.enabled = true;
+firstperson.enabled = false;
+
+let settings = {
+    firstPerson: false,
+};
+
+var gui = new GUI();
+gui.domElement.parentElement.style.zIndex = 1000;
+gui.add(settings, "firstPerson", false).onChange(onSettingsChange);
+
+function onSettingsChange(newValue) {
+    if (settings.firstPerson) {
+        firstperson.enabled = true;
+        orbit.enabled = false;
+    } else {
+        firstperson.enabled = false;
+        var ray = new THREE.Ray();
+        ray.origin.setFromMatrixPosition(camera.matrixWorld);
+        ray.direction
+            .set(0, 0, 1)
+            .unproject(camera)
+            .sub(ray.origin)
+            .normalize();
+        orbit.target = ray.at(2);
+        orbit.enabled = true;
+    }
+}
 
 window.addEventListener("resize", onWindowResize, false);
 
@@ -68,8 +100,8 @@ function onWindowResize() {
 
 const animate = function () {
     requestAnimationFrame(animate);
-    //controls.update();
-    firstperson.update();
+    if (orbit.enabled) orbit.update();
+    if (firstperson.enabled) firstperson.update();
     renderer.render(scene, camera);
 };
 
