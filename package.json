@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@tweenjs/tween.js": "^18.5.0",
-        "three": "^0.116.1"
+        "three": "^0.125.0"
     },
     "devDependencies": {
         "autoprefixer": "^9.1.5",
